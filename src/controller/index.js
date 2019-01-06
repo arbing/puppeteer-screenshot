@@ -5,6 +5,7 @@ const Screenshot = require('../lib/Screenshot')
 const Boom = require('boom')
 const devices = require('../lib/DeviceDescriptors')
 const deviceNames = devices.map(device => device.name)
+const boolean = require('boolean')
 
 const instance = new Screenshot()
 ;(async () => {
@@ -62,6 +63,7 @@ function checkOption(option, ctx) {
   let style = option.style
   let script = option.script
   screenshot.type = screenshot.type ? screenshot.type : 'png'
+  screenshot.fullPage = screenshot.fullPage === undefined ? true : boolean(screenshot.fullPage)
 
   if (!/^https?:\/\/.+/.test(option.url)) {
     ctx.body = Boom.badRequest('invalid url').output
