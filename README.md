@@ -1,8 +1,23 @@
-# sreenshot
+# puppeteer-screenshot
 
-###
+## 运行
 
-#### GET / 可[参考][1]
+### 调试运行
+
+```sh
+npm install
+npm run dev
+```
+
+### Docker 运行
+
+```sh
+docker run -d --restart always -p 8555:8555 --name puppeteer-screenshot arbing/puppeteer-screenshot
+```
+
+## API
+
+### GET / 可[参考][1]
 
 | arguments | default  | required | desc                                   |
 | --------- | -------- | -------- | -------------------------------------- |
@@ -30,10 +45,10 @@
 | script     | string        | -        | false    | [参考][6]                                 |
 | waitFor    | string/number | -        | false    | [参考][7]                                 |
 
-[1]: https://zhaoqize.github.io/puppeteer-api-zh_CN/#/class-Page?id=pagescreenshotoptions
+[1]: https://zhaoqize.github.io/puppeteer-api-zh_CN/#?show=api-pagescreenshotoptions
 [2]: https://github.com/GoogleChrome/puppeteer/blob/master/DeviceDescriptors.js
-[3]: https://zhaoqize.github.io/puppeteer-api-zh_CN/#/class-Page?id=pagescreenshotoptions
+[3]: https://zhaoqize.github.io/puppeteer-api-zh_CN/#?show=api-pagescreenshotoptions
 [4]: https://github.com/GoogleChrome/puppeteer/blob/master/DeviceDescriptors.js
-[5]: https://zhaoqize.github.io/puppeteer-api-zh_CN/#/class-Page?id=pageaddstyletagoptions
-[6]: https://zhaoqize.github.io/puppeteer-api-zh_CN/#/class-Page?id=pageaddscripttagoptions
-[7]: https://zhaoqize.github.io/puppeteer-api-zh_CN/#/class-Page?id=pagewaitforselectororfunctionortimeout-options-args
+[5]: https://zhaoqize.github.io/puppeteer-api-zh_CN/#?show=api-pageaddstyletagoptions
+[6]: https://zhaoqize.github.io/puppeteer-api-zh_CN/#?show=api-pageaddscripttagoptions
+[7]: https://zhaoqize.github.io/puppeteer-api-zh_CN/#?show=api-pagewaitforselectororfunctionortimeout-options-args
