@@ -7,131 +7,94 @@ const devices = require('../lib/DeviceDescriptors')
 const deviceNames = devices.map(device => device.name)
 const boolean = require('boolean')
 
-const instance = new Screenshot()
+const screenshot = new Screenshot()
 ;(async () => {
-  await instance.launch()
+  await screenshot.launch()
 })()
 
+const defaultOptions = {
+  device: 'iPhone 8',
+  url: null,
+  html: null,
+  timeout: 30 * 1000,
+  waitUntil: 'load',
+  style: null,
+  script: null,
+  waitFor: null,
+  selector: 'body',
+  type: 'png',
+  quality: null,
+  fullPage: false,
+  clipX: 0,
+  clipY: 0,
+  clipWidth: 0,
+  clipHeight: 0,
+  omitBackground: false
+}
+
 async function getMethod(ctx) {
-  let options = {
-    url: ctx.query.url,
-    screenshot: {
-      type: ctx.query.type,
-      quality: ctx.query.quality,
-      fullPage: ctx.query.fullPage,
-      clip: {
-        x: ctx.query.x,
-        y: ctx.query.y,
-        width: ctx.query.w,
-        height: ctx.query.h
-      },
-      omitBackground: ctx.query.o
-    },
-    device: ctx.query.device
+  const options = { ...defaultOptions, ...ctx.query }
+
+  if (!checkOption(options, ctx)) {
+    return
   }
-  if (!(options = checkOption(options, ctx))) return
-  ctx.type = options.screenshot.type
+
   try {
-    ctx.body = await instance.getImage(options)
+    ctx.body = await screenshot.getImage(options)
+    ctx.type = options.type
   } catch (e) {
     ctx.body = Boom.gatewayTimeout(e.message || 'Service Unavailable').output
   }
 }
 
 async function postMethod(ctx) {
-  let params = ctx.request.body
-  let options = {
-    url: params.url,
-    screenshot: params.screenshot,
-    html: params.html,
-    style: params.style,
-    script: params.script,
-    waitFor: params.waitFor,
-    device: params.device
+  const options = { ...defaultOptions, ...ctx.request.body }
+  if (!checkOption(options, ctx)) {
+    return
   }
-  if (!(options = checkOption(options, ctx))) return
-  ctx.type = options.screenshot.type
+
   try {
-    ctx.body = await instance.getImage(options)
+    ctx.body = await screenshot.getImage(options)
+    ctx.type = options.type
   } catch (e) {
     ctx.body = Boom.gatewayTimeout(e.message || 'Service Unavailable').output
   }
 }
 
-function checkOption(option, ctx) {
-  let screenshot = option.screenshot || {}
-  let style = option.style
-  let script = option.script
-  screenshot.type = screenshot.type ? screenshot.type : 'png'
-  screenshot.fullPage = screenshot.fullPage === undefined ? true : boolean(screenshot.fullPage)
+function checkOption(options, ctx) {
+  if (options.device && deviceNames.indexOf(options.device) === -1) {
+    ctx.body = Boom.badRequest(`invalid device. Optional [${deviceNames}]`).output
+    return false
+  }
 
-  if (!option.html && !/^https?:\/\/.+/.test(option.url)) {
-    ctx.body = Boom.badRequest('invalid url').output
+  if (!options.url) {
+    if (!/^https?:\/\/.+/.test(options.url)) {
+      ctx.body = Boom.badRequest('invalid url').output
+      return false
+    }
+  }
+
+  options.timeout = Number(options.timeout)
+
+  if (!/^load$|^domcontentloaded$|^networkidle0$|^networkidle2$/.test(options.waitUntil)) {
+    ctx.body = Boom.badRequest('invalid waitUntil. Optional [load,domcontentloaded,networkidle0,networkidle2]').output
     return false
   }
-  if (screenshot.fullPage) {
-    delete screenshot.clip
-  }
-  if (!screenshot.clip) {
-    //pass
-  } else if (screenshot.clip && typeof screenshot.clip !== 'object') {
-    ctx.body = Boom.badRequest('invalid screenshot.clip').output
-    return false
-  } else if (
-    screenshot.clip.x == undefined &&
-    screenshot.clip.y == undefined &&
-    screenshot.clip.width == undefined &&
-    screenshot.clip.height == undefined
-  ) {
-    delete screenshot.clip
-  } else if (
-    Number.isNaN(Number(screenshot.clip.x)) ||
-    Number.isNaN(Number(screenshot.clip.y)) ||
-    Number.isNaN(Number(screenshot.clip.width)) ||
-    Number.isNaN(Number(screenshot.clip.height))
-  ) {
-    ctx.body = Boom.badRequest('invalid screenshot.clip').output
-    return false
-  } else {
-    screenshot.clip.x = Number(screenshot.clip.x)
-    screenshot.clip.y = Number(screenshot.clip.y)
-    screenshot.clip.width = Number(screenshot.clip.width)
-    screenshot.clip.height = Number(screenshot.clip.height)
-  }
-  if (screenshot.type && !/^jpeg$|^png$/.test(screenshot.type)) {
+
+  if (!/^jpeg$|^png$/.test(options.type)) {
     ctx.body = Boom.badRequest('invalid type. Optional [jpeg,png]').output
     return false
   }
-  if (screenshot.quality && !Number.isInteger(screenshot.quality)) {
-    ctx.body = Boom.badRequest(`quality is a number`).output
-    return false
-  }
-  screenshot.omitBackground = !!screenshot.omitBackground
-  if (option.device && deviceNames.indexOf(option.device) === -1) {
-    ctx.body = Boom.badRequest(`invalid device. Optional [${deviceNames}]`).output
-    return false
-  } else {
-    option.device = devices[option.device || 'iPhone 8']
-  }
-  option.screenshot = screenshot
 
-  if (style && typeof style !== 'object') {
-    ctx.body = Boom.badRequest(`style must be an object. {url,content}`).output
-    return false
-  }
-  if (style && style.content) {
-    delete style.url
-  }
+  options.quality = Number(options.quality)
+  options.fullPage = boolean(options.fullPage)
+  options.clipX = Number(options.clipX)
+  options.clipY = Number(options.clipY)
+  options.clipWidth = Number(options.clipWidth)
+  options.clipHeight = Number(options.clipHeight)
+  options.omitBackground = boolean(options.omitBackground)
 
-  if (script && typeof script !== 'object') {
-    ctx.body = Boom.badRequest(`script must be an object. {url,content,type}`).output
-    return false
-  }
-  if (script && script.content) {
-    delete script.url
-  }
-
-  return option
+  return true
 }
 
 module.exports = {
