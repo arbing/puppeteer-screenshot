@@ -1,5 +1,10 @@
 # puppeteer-screenshot
 
+Web screenshot API, using Puppeteer
+
+- github https://github.com/arbing/puppeteer-screenshot
+- docker hub https://hub.docker.com/r/arbing/puppeteer-screenshot
+
 ## 运行
 
 ### 调试运行
@@ -9,8 +14,8 @@ npm config set PUPPETEER_DOWNLOAD_HOST https://npm.taobao.org/mirrors
 
 npm i -g nodemon
 
-npm install
-npm run dev
+yarn install
+yarn dev
 ```
 
 ### Docker 运行

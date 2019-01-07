@@ -3,13 +3,16 @@
  */
 const puppeteer = require('puppeteer')
 const devices = require('./DeviceDescriptors')
+
 class Screenshot {
   constructor() {
     this.browser = null
   }
 
   async launch() {
-    this.browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] })
+    this.browser = await puppeteer.launch({
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    })
   }
 
   async getImage({ url, html, screenshot = {}, device = devices['iPhone 8'], style, script, waitFor, ...others }) {
