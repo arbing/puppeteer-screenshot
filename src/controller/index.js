@@ -65,7 +65,7 @@ function checkOption(option, ctx) {
   screenshot.type = screenshot.type ? screenshot.type : 'png'
   screenshot.fullPage = screenshot.fullPage === undefined ? true : boolean(screenshot.fullPage)
 
-  if (!/^https?:\/\/.+/.test(option.url)) {
+  if (!option.html && !/^https?:\/\/.+/.test(option.url)) {
     ctx.body = Boom.badRequest('invalid url').output
     return false
   }

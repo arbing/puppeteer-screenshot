@@ -5,6 +5,10 @@
 ### 调试运行
 
 ```sh
+npm config set PUPPETEER_DOWNLOAD_HOST https://npm.taobao.org/mirrors
+
+npm i -g nodemon
+
 npm install
 npm run dev
 ```
