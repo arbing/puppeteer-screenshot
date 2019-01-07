@@ -1,6 +1,6 @@
 # puppeteer-screenshot
 
-Web screenshot API, using Puppeteer
+Webpage screenshot API, using Puppeteer
 
 - github https://github.com/arbing/puppeteer-screenshot
 - docker hub https://hub.docker.com/r/arbing/puppeteer-screenshot
