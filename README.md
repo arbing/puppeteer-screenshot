@@ -1,9 +1,12 @@
 # puppeteer-screenshot
 
-Webpage screenshot API, using Puppeteer
+<!-- [START badges] -->
 
-- github https://github.com/arbing/puppeteer-screenshot
-- docker hub https://hub.docker.com/r/arbing/puppeteer-screenshot
+[![Stars](https://img.shields.io/github/stars/arbing/puppeteer-screenshot.svg?label=Stars&style=social)](https://github.com/arbing/puppeteer-screenshot)[![Docker Automated build](https://img.shields.io/docker/automated/arbing/puppeteer-screenshot.svg)](https://hub.docker.com/r/arbing/puppeteer-screenshot)[![Docker Build Status](https://img.shields.io/docker/build/arbing/puppeteer-screenshot.svg)](https://hub.docker.com/r/arbing/puppeteer-screenshot)[![MicroBadger Size](https://img.shields.io/microbadger/image-size/arbing/puppeteer-screenshot.svg)](https://hub.docker.com/r/arbing/puppeteer-screenshot)[![MicroBadger Layers](https://img.shields.io/microbadger/layers/arbing/puppeteer-screenshot.svg)](https://hub.docker.com/r/arbing/puppeteer-screenshot)[![AppVeyor](https://img.shields.io/appveyor/ci/arbing/puppeteer-screenshot.svg)](https://ci.appveyor.com/project/arbing/puppeteer-screenshot)
+
+<!-- [END badges] -->
+
+Webpage screenshot API, using Puppeteer
 
 ## 运行
 
