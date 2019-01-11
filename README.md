@@ -32,7 +32,12 @@ docker run -d --restart always -p 8555:8555 --name puppeteer-screenshot arbing/p
 ### 接口路径
 
 GET /
+
 POST /
+
+GET /screenshot
+
+POST /screenshot
 
 ### 接口参数
 
@@ -42,7 +47,7 @@ POST /
 | url            | string        | -          | true     | 导航到的地址. 地址应该带有 http 协议, 比如 https://，[参考][2]            |
 | html           | string        | -          | false    | 要渲染的 html 代码，[参考][3]                                             |
 | timeout        | number        | 30 \* 1000 | false    | 跳转等待时间，单位是毫秒, 默认是 30 秒, 传 0 表示无限等待                 |
-| waitUntil      | number        | load       | false    | 满足什么条件认为页面跳转完成，默认是 load 事件触发时                      |
+| waitUntil      | string        | load       | false    | 满足什么条件认为页面跳转完成，默认是 load 事件触发时                      |
 | style          | string        | -          | false    | [参考][4]                                                                 |
 | script         | string        | -          | false    | [参考][5]                                                                 |
 | waitFor        | string/number | -          | false    | [参考][6]                                                                 |

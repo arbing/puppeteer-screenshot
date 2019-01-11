@@ -1,9 +1,6 @@
-/**
- * Created by pengchaoyang on 2018/11/9
- */
 const Screenshot = require('../lib/Screenshot')
 const Boom = require('boom')
-const devices = require('../lib/DeviceDescriptors')
+const devices = require('puppeteer/DeviceDescriptors')
 const deviceNames = devices.map(device => device.name)
 const boolean = require('boolean')
 
@@ -32,8 +29,18 @@ const defaultOptions = {
   omitBackground: false
 }
 
-async function getMethod(ctx) {
-  const options = { ...defaultOptions, ...ctx.query }
+function removeNullProps(obj) {
+  const newObj = {}
+  for (const [key, value] of Object.entries(obj)) {
+    if (value != null && value != undefined) {
+      newObj[key] = value
+    }
+  }
+  return newObj
+}
+
+async function getScreenshot(ctx) {
+  const options = { ...defaultOptions, ...removeNullProps(ctx.query) }
 
   if (!checkOption(options, ctx)) {
     return
@@ -47,8 +54,8 @@ async function getMethod(ctx) {
   }
 }
 
-async function postMethod(ctx) {
-  const options = { ...defaultOptions, ...ctx.request.body }
+async function createScreenshot(ctx) {
+  const options = { ...defaultOptions, ...removeNullProps(ctx.request.body) }
   if (!checkOption(options, ctx)) {
     return
   }
@@ -98,6 +105,6 @@ function checkOption(options, ctx) {
 }
 
 module.exports = {
-  getMethod,
-  postMethod
+  getScreenshot,
+  createScreenshot
 }

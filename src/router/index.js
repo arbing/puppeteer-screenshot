@@ -1,11 +1,11 @@
-/**
- * Created by pengchaoyang on 2018/11/9
- */
-const Router = require('koa-router');
-const router = new Router();
-const {getMethod,postMethod}=require('../controller/index')
-router
-  .get('/', getMethod)
-  .post('/', postMethod)
+const Router = require('koa-router')
+const router = new Router()
+const { getScreenshot, createScreenshot } = require('../controller/index')
 
-module.exports=router.routes()
+router
+  .get('/', getScreenshot)
+  .post('/', createScreenshot)
+  .get('/screenshot', getScreenshot)
+  .post('/screenshot', createScreenshot)
+
+module.exports = router.routes()

@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer')
-const devices = require('./DeviceDescriptors')
+const devices = require('puppeteer/DeviceDescriptors')
 
 class Screenshot {
   constructor() {
